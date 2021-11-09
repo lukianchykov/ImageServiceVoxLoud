@@ -6,10 +6,11 @@
 Implement standalone Spring boot application  which will be responsible for uploading/search user images
 
 ### Domain ###
-Use in memory H2 database
 1. Account - user data, account can have multiple images
 2. Image - image metadata (original name, content type, size, reference, etc.), image can belong only to one account 
 3. Tag - list of string tags which can be used to search images
+
+Use in memory H2 database
 
 Image entity should not contain binary content (value object) in database, but only image metadata. Mock file uploader to 3rd party object storage service, which will return some random reference on uploaded object and store reference in image entity.
 
