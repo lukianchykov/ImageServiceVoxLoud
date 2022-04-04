@@ -30,7 +30,7 @@ a.main-logo-link:hover {
 }
 
 #admin_profile_pic {
-    background-image: url("../images/admin_page.jpg");
+    background-image: url("/static/images/admin_page.jpg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }

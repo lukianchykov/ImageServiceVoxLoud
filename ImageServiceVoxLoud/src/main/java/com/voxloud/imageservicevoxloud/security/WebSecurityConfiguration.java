@@ -71,7 +71,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/index*", "/json/**",
+                .antMatchers("/css/**", "/js/**", "/index/**", "/json/**",
                         "/*.ico", "/images/**", "/registration**").permitAll()
                 .antMatchers(HttpMethod.GET, "/account/**").hasRole(Role.USER.name())
                 .antMatchers(HttpMethod.GET, "/account/**").authenticated()
