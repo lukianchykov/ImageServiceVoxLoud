@@ -35,20 +35,13 @@ import java.util.NoSuchElementException;
 public class AccountController {
     private final AccountService accountService;
 
-    @Secured("USER")
-    @GetMapping("/account/{id}")
-    public String welcome(@PathVariable Long id, Model model) {
-        model.addAttribute("account", accountService.findAccountById(id));
-        return "account-profile";
-    }
-
     @ModelAttribute("account")
     public UserRegistrationDto userRegistrationDto() {
         return new UserRegistrationDto();
     }
 
     @GetMapping("/registration")
-    public String registration(Model model) {
+    public String registration() {
         return "registration";
     }
 
@@ -56,9 +49,9 @@ public class AccountController {
     public String registerUserAccount(@ModelAttribute("account") @Valid UserRegistrationDto userDto,
                                       BindingResult result){
 
-        Account existing = accountService.findByEmail(userDto.getEmail());
-        if (existing != null){
-            result.rejectValue("email", String.valueOf(HttpStatus.CONFLICT), "There is already an account registered with that email");
+        Account existingByEmail = accountService.findByEmail(userDto.getEmail());
+        if (existingByEmail != null){
+            result.rejectValue("email", String.valueOf(HttpStatus.CONFLICT), "There is already an account registered");
         }
 
         if (result.hasErrors()){
@@ -81,11 +74,6 @@ public class AccountController {
     @GetMapping("/login")
     public String login(){
         return "login";
-    }
-
-    @GetMapping("/access-denied")
-    public String accessDenied() {
-        return "access-denied";
     }
 
     @Secured("ADMIN")

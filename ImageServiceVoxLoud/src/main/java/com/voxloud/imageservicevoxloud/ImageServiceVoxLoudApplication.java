@@ -11,11 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication(scanBasePackages = "com.voxloud.imageservicevoxloud")
 public class ImageServiceVoxLoudApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ImageServiceVoxLoudApplication.class, args);
-    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(ImageServiceVoxLoudApplication.class, args);
     }
 }

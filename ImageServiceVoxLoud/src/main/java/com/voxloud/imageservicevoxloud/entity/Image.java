@@ -27,6 +27,9 @@ public class Image {
     @Column(name = "type")
     private String type;
 
+    @Column(name = "tag")
+    private String tag;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_date", nullable = false)
     private Date createDate;
@@ -39,7 +42,7 @@ public class Image {
     @Column(name = "image", unique = false, nullable = false, length = Integer.MAX_VALUE)
     private byte[] image;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 

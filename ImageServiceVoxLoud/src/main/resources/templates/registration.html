@@ -23,6 +23,12 @@
             </button>
             <a class="navbar-brand" href="#" th:href="@{/}">Registration</a>
         </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a class="navbar-nav" th:href="@{/}">My Image Service</a></li>
+            </ul>
+        </div>
+        </div>
     </div>
 </nav>
 
@@ -41,7 +47,7 @@
             <h1>Registration</h1>
             <form th:action="@{/registration}" th:object="${account}" method="post">
 
-                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+                <p class="error-message" style="color: red" th:if="${#fields.hasGlobalErrors()}"
                    th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
                     error</p>
 
@@ -49,7 +55,7 @@
                      th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
                     <label for="username" class="control-label">Username</label> <input
                         id="username" class="form-control" th:field="*{username}" />
-                    <p class="error-message"
+                    <p class="alert alert-danger error-message" style="color: red"
                        th:each="error: ${#fields.errors('username')}"
                        th:text="${error}">Validation error</p>
                 </div>
@@ -57,7 +63,7 @@
                      th:classappend="${#fields.hasErrors('email')}? 'has-error':''">
                     <label for="email" class="control-label">E-mail</label> <input
                         id="email" class="form-control" th:field="*{email}" />
-                    <p class="error-message"
+                    <p class="alert alert-danger error-message" style="color: red"
                        th:each="error : ${#fields.errors('email')}" th:text="${error}">Validation
                         error</p>
                 </div>
@@ -66,7 +72,7 @@
                     <label for="password" class="control-label">Password</label> <input
                         id="password" class="form-control" type="password"
                         th:field="*{password}" />
-                    <p class="error-message"
+                    <p class="alert alert-danger error-message" style="color: red"
                        th:each="error : ${#fields.errors('password')}"
                        th:text="${error}">Validation error</p>
                 </div>
@@ -76,7 +82,7 @@
                         class="control-label" for="terms"> I agree with the <a
                         href="#">terms and conditions</a> for Registration.
                 </label>
-                    <p class="error-message"
+                    <p class="alert alert-danger error-message" style="color: red"
                        th:each="error : ${#fields.errors('terms')}" th:text="${error}">Validation
                         error</p>
                 </div>

@@ -63,7 +63,7 @@ public class AccountService implements AccountInterface, UserDetailsService {
         }
     }
 
-    public Account save(UserRegistrationDto registration){
+    public void save(UserRegistrationDto registration){
         log.info("Saving new registered user {} to db", registration.getUsername());
         Account account = new Account();
         account.setUsername(registration.getUsername());
@@ -72,12 +72,26 @@ public class AccountService implements AccountInterface, UserDetailsService {
         account.setCreateDate(new Date());
         account.setUpdateDate(new Date());
         account.setRoles(new HashSet<>(List.of(Role.USER)));
-        return accountRepository.save(account);
+        accountRepository.save(account);
     }
 
     @Override
+    @Transactional
     public Account findByEmail(String email) {
-        return null;
+        log.info("Fetching user {}", email);
+        return accountRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public Account findByName(String username) {
+        log.info("Fetching user {}", username);
+        Account findAccount = accountRepository.findByUsername(username);
+        if(findAccount != null) {
+            return findAccount;
+        }else {
+            throw new CustomEmptyDataException("unable to find account with such username");
+        }
     }
 
     @Override

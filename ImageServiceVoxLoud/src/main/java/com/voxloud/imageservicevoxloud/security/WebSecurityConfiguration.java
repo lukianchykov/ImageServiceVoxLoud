@@ -62,7 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/h2-console/**" ,"/resources/**", "/static/**");
+                .antMatchers("/h2-console/**" ,"/resources/**", "/static/**", "/images/**");
         web.debug(true);
     }
 
@@ -72,7 +72,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/index/**", "/json/**",
-                        "/*.ico", "/images/**", "/registration**").permitAll()
+                        "/*.ico","/registration**").permitAll()
                 .antMatchers(HttpMethod.GET, "/account/**").hasRole(Role.USER.name())
                 .antMatchers(HttpMethod.GET, "/account/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.ADMIN.name())
@@ -80,7 +80,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/upload")
                 .permitAll()
                     .and()
                 .logout()
