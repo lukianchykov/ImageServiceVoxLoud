@@ -6,7 +6,7 @@ import com.voxloud.imageservicevoxloud.entity.Role;
 import com.voxloud.imageservicevoxloud.entity.dto.UserRegistrationDto;
 import com.voxloud.imageservicevoxloud.exception.CustomEmptyDataException;
 import com.voxloud.imageservicevoxloud.repository.AccountRepository;
-import com.voxloud.imageservicevoxloud.service.interfaces.AccountInterface;
+import com.voxloud.imageservicevoxloud.service.interfaces.AccountServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class AccountService implements AccountInterface, UserDetailsService {
+public class AccountService implements AccountServiceInterface, UserDetailsService {
 
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;

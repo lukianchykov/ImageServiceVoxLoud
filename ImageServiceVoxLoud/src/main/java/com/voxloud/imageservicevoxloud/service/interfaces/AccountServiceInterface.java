@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface AccountInterface extends UserDetailsService {
+public interface AccountServiceInterface extends UserDetailsService {
     void saveAccount(Account account);
     void save(UserRegistrationDto registration);
     Account findByEmail(String email);

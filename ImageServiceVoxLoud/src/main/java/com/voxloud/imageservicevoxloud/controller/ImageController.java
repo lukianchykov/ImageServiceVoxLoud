@@ -12,20 +12,15 @@ import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.WebUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
@@ -44,7 +39,7 @@ public class ImageController{
 
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/upload")
+    @GetMapping("/account/images")
     public String searchByTag(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Image> images;
 
@@ -57,6 +52,13 @@ public class ImageController{
         model.addAttribute("images", images);
         model.addAttribute("filter", filter);
 
+        return "account-images";
+    }
+
+    @Secured("USER")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/upload")
+    public String saveImage(){
         return "upload";
     }
 
