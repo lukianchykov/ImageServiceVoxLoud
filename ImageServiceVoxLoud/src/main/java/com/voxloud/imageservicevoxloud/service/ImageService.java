@@ -7,10 +7,10 @@ import com.voxloud.imageservicevoxloud.repository.ImageRepository;
 import com.voxloud.imageservicevoxloud.service.interfaces.ImageServiceInterface;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,8 +82,13 @@ public class ImageService implements ImageServiceInterface {
             throw new CustomEmptyDataException("unable to find account with such accountName");
         }
     }
+    @Override
+    public Optional<Image> findImageById(Long id) {
+        return imageRepository.findById(id);
+    }
 
     @Override
+    @Transactional
     public List<Image> getAllImages() {
         log.info("Fetching all images");
         return imageRepository.findAll();

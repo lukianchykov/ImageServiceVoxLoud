@@ -5,5 +5,7 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="dataTables.jqueryui" level="application" />
+    <orderEntry type="library" name="datatables" level="application" />
   </component>
 </module>

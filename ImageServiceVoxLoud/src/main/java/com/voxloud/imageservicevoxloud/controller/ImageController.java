@@ -2,6 +2,7 @@ package com.voxloud.imageservicevoxloud.controller;
 
 import com.voxloud.imageservicevoxloud.entity.Account;
 import com.voxloud.imageservicevoxloud.entity.Image;
+import com.voxloud.imageservicevoxloud.exception.CustomEmptyDataException;
 import com.voxloud.imageservicevoxloud.service.AccountService;
 import com.voxloud.imageservicevoxloud.service.ImageService;
 import com.voxloud.imageservicevoxloud.util.ImageUtility;
@@ -12,6 +13,7 @@ import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,9 +23,11 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,28 +41,27 @@ public class ImageController{
     private final ImageService imageService;
     private final AccountService accountService;
 
-    @Secured("USER")
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/account/images")
-    public String searchByTag(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-        Iterable<Image> images;
-
-        if (filter != null && !filter.isEmpty()) {
-            images = imageService.findImageByTag(filter);
-        } else {
-            images = imageService.getAllImages();
-        }
-
-        model.addAttribute("images", images);
-        model.addAttribute("filter", filter);
-
-        return "account-images";
-    }
-
+    //    @Secured("USER")
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/account/images")
+//    public String searchByTag(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+//        Iterable<Image> images;
+//
+//        if (filter != null && !filter.isEmpty()) {
+//            images = imageService.findImageByTag(filter);
+//        } else {
+//            images = imageService.getAllImages();
+//        }
+//
+//        model.addAttribute("images", images);
+//        model.addAttribute("filter", filter);
+//
+//        return "account-images";
+//    }
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upload")
-    public String saveImage(){
+    public String upload(){
         return "upload";
     }
 
@@ -70,7 +73,7 @@ public class ImageController{
             @RequestParam("name") String name,
             @RequestParam("tag") String tag,
             final @RequestParam("image") MultipartFile file
-    ) throws IOException {
+    ) throws IOException{
         Account account = accountService.findByName(principal.getName());
 
         Image image = new Image();
@@ -84,13 +87,37 @@ public class ImageController{
         image.setUpdateDate(new Date());
         imageService.saveImage(image);
 
-        return "upload";
+        return "redirect:/account/images";
+    }
+
+    @GetMapping("/image/display/{id}")
+    @ResponseBody
+    void showUniqueImageUtils(@PathVariable("id") Long id, HttpServletResponse response, Optional<Image> image)
+            throws IOException {
+        log.info("Id :: " + id);
+        image = imageService.findImageById(id);
+        if(image.isPresent()) {
+            response.setContentType(String.valueOf(MediaType.valueOf(image.get().getType())));
+            response.getOutputStream().write(ImageUtility.decompressImage(image.get().getImage()));
+            response.getOutputStream().close();
+        }else{
+            throw new CustomEmptyDataException("Unable to find image");
+        }
+    }
+
+    @Secured("USER")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/account/images")
+    public String getAllImages( Model model
+    ){
+        model.addAttribute("list", imageService.getAllImages());
+        return "account-images";
     }
 
     @RequestMapping("uploadError")
     public ModelAndView onUploadError() {
         ModelAndView errorView = new ModelAndView("upload");
-        errorView.addObject("error","Uploaded File is too large!");
+        errorView.addObject("error","File is too large! File must be less than 10 MB");
         return errorView;
     }
 

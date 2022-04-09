@@ -44,7 +44,9 @@
             <div class="list-group">
                 <p class="list-group-item list-group-item-action active">List of accounts</p>
                 <tr class="list-group-item list-group-item-action" th:each="account : ${list}">
-                    <td><p class="list-group-item list-group-item-action" th:text="${account.username} + ': ' + *{account.roles}"> Name + Roles</p></td>
+                    <td>
+                        <p class="list-group-item list-group-item-action" th:text="${account.username} + ': ' + *{account.roles}"> Name + Roles</p>
+                    </td>
                 </tr>
             </div>
         </div>

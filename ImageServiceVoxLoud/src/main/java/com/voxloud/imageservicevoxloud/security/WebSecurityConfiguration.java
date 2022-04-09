@@ -62,8 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/h2-console/**" ,"/resources/**", "/static/**", "/images/**");
-        web.debug(true);
+                .antMatchers("/h2-console/**", "/registration**", "/static/**","/images/**");
     }
 
 
@@ -71,8 +70,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/index/**", "/json/**",
-                        "/*.ico","/registration**").permitAll()
+                .antMatchers("/css/**", "/js/**", "/index*", "/json/**", "/*.ico", "static/**", "/images/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/account/**").hasRole(Role.USER.name())
                 .antMatchers(HttpMethod.GET, "/account/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/admin/**").hasRole(Role.ADMIN.name())
