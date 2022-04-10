@@ -48,10 +48,16 @@
     <div class="form-group display-3 text-right">
         <form method="GET" action="/account/images" class="form-inline">
             <label>
-                <input type="text" name="filter" autofocus="autofocus" class="form-control" th:value="${filter}" placeholder="Search by tag"
-                       aria-label="Search">
+                <input type="text" name="filter" id="filter" size="20"
+                       class="form-control" th:value="${filter}" required aria-label="Search">
             </label>
             <button type="submit" class="btn btn-primary ml-2">Search</button>
+            <input type="button" class="btn btn-primary ml-2" value="Clear" id="btnClear" onclick="clearSearch()" />
+            <script type="text/javascript">
+                function clearSearch() {
+                    window.location = "[[@{/account/images}]]";
+                }
+            </script>
         </form>
     </div>
 </div>
@@ -59,26 +65,22 @@
     <thead>
     <tr>
         <td>I.Num.</td>
-        <td>Acc.Name</td>
-        <td>Created date</td>
-        <td>Image</td>
         <td>Title</td>
+        <td>Image</td>
         <td>Tag</td>
         <td>Type</td>
-        <td>Updated date</td>
+        <td>Created date</td>
     </tr>
     </thead>
     <tbody th:with="count=0">
     <tr th:each="image : ${list}">
         <td th:with="count=${count + 1}" th:text="${count}"></td>
-        <td th:text="${#authentication.name}"></td>
-        <td th:text="${#dates.format(image.createDate, 'dd-MM-yyyy')}"></td>
-        <td><img th:src="@{${'/image/display/'+ image.id}}"
-                 class="card img-fluid" style="width:300px" alt=""/></td>
         <td th:text="${image.name}"></td>
+        <td><img th:src="@{${'/image/display/'+ image.id}}"
+                 class="card img-fluid" style="width:300px"/></td>
         <td th:text="${image.tag}"></td>
         <td th:text="${image.type}"></td>
-        <td th:text="${#dates.format(image.updateDate, 'dd-MM-yyyy')}"></td>
+        <td th:text="${#dates.format(image.createDate, 'dd-MM-yyyy')}"></td>
     </tr>
     </tbody>
 </table>

@@ -13,6 +13,7 @@ import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,14 +39,14 @@ import java.util.Optional;
         @io.swagger.annotations.ApiResponse(code = 401, message = "Due to security constraints, your access request cannot be authorized"),
         @io.swagger.annotations.ApiResponse(code = 500, message = "The server is down. Please bear with us."),
 })
-public class ImageController{
+public class ImageController {
     private final ImageService imageService;
     private final AccountService accountService;
 
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upload")
-    public String upload(){
+    public String upload() {
         return "upload";
     }
 
@@ -57,7 +58,7 @@ public class ImageController{
             @RequestParam("name") String name,
             @RequestParam("tag") String tag,
             final @RequestParam("image") MultipartFile file
-    ) throws IOException{
+    ) throws IOException {
         Account account = accountService.findByName(principal.getName());
 
         Image image = new Image();
@@ -76,15 +77,15 @@ public class ImageController{
 
     @GetMapping("/image/display/{id}")
     @ResponseBody
-    void showUniqueImageUtils(@PathVariable("id") Long id, HttpServletResponse response, Optional<Image> image)
+    void showUniqueImageUtils(@PathVariable("id") Long id, HttpServletResponse response)
             throws IOException {
-        log.info("Id :: " + id);
-        image = imageService.findImageById(id);
-        if(image.isPresent()) {
+        log.info("Id : " + id);
+        Optional<Image> image = imageService.findImageById(id);
+        if (image.isPresent()) {
             response.setContentType(String.valueOf(MediaType.valueOf(image.get().getType())));
             response.getOutputStream().write(ImageUtility.decompressImage(image.get().getImage()));
             response.getOutputStream().close();
-        }else{
+        } else {
             throw new CustomEmptyDataException("Unable to find image");
         }
     }
@@ -92,11 +93,12 @@ public class ImageController{
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/account/images")
-    public String searchByTag(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+    public String search(@Param("filter")String filter, Model model) {
         List<Image> images;
+
         if (filter != null && !filter.isEmpty()) {
-            images = imageService.findImageByTag(filter);
-        } else {
+            images = imageService.findImageByFilter(filter);
+        }else {
             images = imageService.getAllImages();
         }
 
@@ -109,7 +111,7 @@ public class ImageController{
     @RequestMapping("uploadError")
     public ModelAndView onUploadError() {
         ModelAndView errorView = new ModelAndView("upload");
-        errorView.addObject("error","File is too large! File must be less than 2 MB");
+        errorView.addObject("error", "File is too large! File must be less than 2 MB");
         return errorView;
     }
 

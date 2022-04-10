@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +22,6 @@ import java.util.Optional;
 public class ImageService implements ImageServiceInterface {
 
     private final ImageRepository imageRepository;
-    private final AccountService accountService;
 
     public void saveImage(Image image) {
         image.setAccount(image.getAccount());
@@ -35,52 +35,9 @@ public class ImageService implements ImageServiceInterface {
     }
 
     @Override
-    public List<Image> findImageByTag(String tag) {
-        log.info("Fetching image {}", tag);
-        List<Image> findImages = imageRepository.findByTag(tag);
-        if(findImages != null && findImages.size() != 0) {
-            return findImages;
-        }else {
-            throw new CustomEmptyDataException("unable to find images with such tag");
-        }
-    }
-
-    @Override
-    public List<Image> findImageByName(String name) {
-        log.info("Fetching image {}", name);
-        List<Image> findImages = imageRepository.findByName(name);
-        if(findImages != null && findImages.size() != 0) {
-            return findImages;
-        }else {
-            throw new CustomEmptyDataException("unable to find images with such name");
-        }
-    }
-
-    @Override
-    public List<Image> findImageByType(String type) {
-        log.info("Fetching image {}", type);
-        List<Image> findImages = imageRepository.findByType(type);
-        if(findImages != null && findImages.size() != 0) {
-            return findImages;
-        }else {
-            throw new CustomEmptyDataException("unable to find images with such type");
-        }
-    }
-
-    @Override
-    public List<Image> findImageByAccount(String accountName) {
-        log.info("Fetching image {}", accountName);
-        Account findAccount = accountService.findByName(accountName);
-        if(findAccount != null) {
-            List<Image> findImages = imageRepository.findByAccount(findAccount);
-            if(findImages != null && findImages.size() != 0) {
-                return findImages;
-            } else {
-                throw new CustomEmptyDataException("unable to find images with such account");
-            }
-        }else{
-            throw new CustomEmptyDataException("unable to find account with such accountName");
-        }
+    public List<Image> findImageByFilter(String filter) {
+        log.info("Fetching all images {} ", filter);
+        return imageRepository.searchByFilter(filter);
     }
     @Override
     public Optional<Image> findImageById(Long id) {
