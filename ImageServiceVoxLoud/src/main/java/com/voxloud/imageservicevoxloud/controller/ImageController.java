@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -41,23 +42,6 @@ public class ImageController{
     private final ImageService imageService;
     private final AccountService accountService;
 
-    //    @Secured("USER")
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/account/images")
-//    public String searchByTag(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
-//        Iterable<Image> images;
-//
-//        if (filter != null && !filter.isEmpty()) {
-//            images = imageService.findImageByTag(filter);
-//        } else {
-//            images = imageService.getAllImages();
-//        }
-//
-//        model.addAttribute("images", images);
-//        model.addAttribute("filter", filter);
-//
-//        return "account-images";
-//    }
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/upload")
@@ -108,16 +92,24 @@ public class ImageController{
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/account/images")
-    public String getAllImages( Model model
-    ){
-        model.addAttribute("list", imageService.getAllImages());
+    public String searchByTag(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+        List<Image> images;
+        if (filter != null && !filter.isEmpty()) {
+            images = imageService.findImageByTag(filter);
+        } else {
+            images = imageService.getAllImages();
+        }
+
+        model.addAttribute("list", images);
+        model.addAttribute("filter", filter);
+
         return "account-images";
     }
 
     @RequestMapping("uploadError")
     public ModelAndView onUploadError() {
         ModelAndView errorView = new ModelAndView("upload");
-        errorView.addObject("error","File is too large! File must be less than 10 MB");
+        errorView.addObject("error","File is too large! File must be less than 2 MB");
         return errorView;
     }
 

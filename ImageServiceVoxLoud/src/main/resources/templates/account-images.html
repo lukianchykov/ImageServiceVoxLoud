@@ -33,7 +33,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li security:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
+                <li security:authorize="isAuthenticated()"><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                <li><a href="/upload" th:href="@{/upload}">Upload</a></li>
             </ul>
         </div>
     </div>
@@ -42,10 +43,18 @@
 <br>
 <div class="col-6 right_column m-auto">
     <h2 class="display-3 text-center">
-        Account Name: <span style="color:royalblue;" th:text="${#authentication.name}">User</span>
+        Your Images: <span style="color:royalblue;" th:text="${#authentication.name}">User</span>
     </h2>
+    <div class="form-group display-3 text-right">
+        <form method="GET" action="/account/images" class="form-inline">
+            <label>
+                <input type="text" name="filter" autofocus="autofocus" class="form-control" th:value="${filter}" placeholder="Search by tag"
+                       aria-label="Search">
+            </label>
+            <button type="submit" class="btn btn-primary ml-2">Search</button>
+        </form>
+    </div>
 </div>
-
 <table id="example" class="table table-bordered table-striped">
     <thead>
     <tr>

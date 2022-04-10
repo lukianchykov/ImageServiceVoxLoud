@@ -38,7 +38,7 @@ public class ImageService implements ImageServiceInterface {
     public List<Image> findImageByTag(String tag) {
         log.info("Fetching image {}", tag);
         List<Image> findImages = imageRepository.findByTag(tag);
-        if(findImages != null && findImages.size() == 0) {
+        if(findImages != null && findImages.size() != 0) {
             return findImages;
         }else {
             throw new CustomEmptyDataException("unable to find images with such tag");
@@ -49,7 +49,7 @@ public class ImageService implements ImageServiceInterface {
     public List<Image> findImageByName(String name) {
         log.info("Fetching image {}", name);
         List<Image> findImages = imageRepository.findByName(name);
-        if(findImages != null && findImages.size() == 0) {
+        if(findImages != null && findImages.size() != 0) {
             return findImages;
         }else {
             throw new CustomEmptyDataException("unable to find images with such name");
@@ -60,7 +60,7 @@ public class ImageService implements ImageServiceInterface {
     public List<Image> findImageByType(String type) {
         log.info("Fetching image {}", type);
         List<Image> findImages = imageRepository.findByType(type);
-        if(findImages != null && findImages.size() == 0) {
+        if(findImages != null && findImages.size() != 0) {
             return findImages;
         }else {
             throw new CustomEmptyDataException("unable to find images with such type");
@@ -73,7 +73,7 @@ public class ImageService implements ImageServiceInterface {
         Account findAccount = accountService.findByName(accountName);
         if(findAccount != null) {
             List<Image> findImages = imageRepository.findByAccount(findAccount);
-            if (findImages != null && findImages.size() == 0) {
+            if(findImages != null && findImages.size() != 0) {
                 return findImages;
             } else {
                 throw new CustomEmptyDataException("unable to find images with such account");

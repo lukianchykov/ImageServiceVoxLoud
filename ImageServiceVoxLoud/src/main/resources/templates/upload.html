@@ -29,7 +29,7 @@
                     class="icon-bar"></span> <span class="icon-bar"></span> <span
                     class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/account/images" th:href="@{/account/images}">Account Images</a>
+            <a class="navbar-brand" href="/upload" th:href="@{/account/images}">Upload Images</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -42,7 +42,7 @@
 <br>
 <div class="col-6 right_column m-auto">
     <h2 class="display-3 text-center">
-        Account Name: <span style="color:royalblue;" th:text="${#authentication.name}">User</span>
+        Welcome: <span style="color:royalblue;" th:text="${#authentication.name}">User</span>
     </h2>
     <br>
     <div class="container bg-light">
@@ -54,16 +54,6 @@
         </div>
     </div>
 </div>
-<!--<div class="form-row">-->
-<!--    <div class="form-group col-md-6">-->
-<!--        <form method="get" action="/account/images" class="form-inline">-->
-<!--            <label>-->
-<!--                <input type="text" name="filter" class="form-control" th:text="${filter}" placeholder="Search by tag"  aria-label="Search">-->
-<!--            </label>-->
-<!--            <button type="submit" class="btn btn-primary ml-2">Search</button>-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
 <br>
 <div class="container col-md-4 col-md-offset-4 row alert alert-danger text-center" style="color: red" th:text="${error}"
      th:if="${error}">
