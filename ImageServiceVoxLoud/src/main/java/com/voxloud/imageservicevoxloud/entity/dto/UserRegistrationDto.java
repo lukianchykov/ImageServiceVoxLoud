@@ -1,7 +1,9 @@
 package com.voxloud.imageservicevoxloud.entity.dto;
 
 import com.voxloud.imageservicevoxloud.constraint.FieldMatch;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.AssertTrue;
@@ -14,6 +16,8 @@ import javax.validation.constraints.NotEmpty;
 })
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegistrationDto {
 
     @NotEmpty

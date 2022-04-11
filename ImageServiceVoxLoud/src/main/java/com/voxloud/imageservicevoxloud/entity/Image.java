@@ -39,7 +39,7 @@ public class Image {
     private Date updateDate;
 
     @Lob
-    @Column(name = "image", unique = false, nullable = false, length = Integer.MAX_VALUE)
+    @Column(name = "image", nullable = false, length = Integer.MAX_VALUE)
     private byte[] image;
 
     @ManyToOne(fetch = FetchType.EAGER)

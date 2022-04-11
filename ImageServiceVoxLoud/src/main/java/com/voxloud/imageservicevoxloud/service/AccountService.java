@@ -139,7 +139,7 @@ public class AccountService implements AccountServiceInterface, UserDetailsServi
 
         if (accountForDelete != null) {
             accountRepository.delete(accountForDelete);
-            return "User with id:" + id + " was successfully remover";
+            return "User with id:" + id + " was successfully removed";
         } else {
             throw new CustomEmptyDataException("unable to delete user");
         }
