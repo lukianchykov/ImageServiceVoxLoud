@@ -44,7 +44,7 @@ public class AccountService implements AccountServiceInterface, UserDetailsServi
     }
 
     @Override
-    public void saveAccount(Account account) {
+    public Account saveAccount(Account account) {
         log.info("Saving new user {} to db", account.getUsername());
         Account checkIfExists = accountRepository.findByUsername(account.getUsername());
         if(checkIfExists != null){
@@ -59,7 +59,7 @@ public class AccountService implements AccountServiceInterface, UserDetailsServi
             if (account.getRoles() == null) {
                 account.setRoles(new HashSet<>(List.of(Role.USER)));
             }
-            accountRepository.save(account);
+            return accountRepository.save(account);
         }
     }
 
