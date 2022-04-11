@@ -41,10 +41,12 @@
 </nav>
 <br>
 <br>
+<br>
+<br>
 <div class="col-6 right_column m-auto">
-    <h2 class="display-3 text-center">
-        Your Images: <span style="color:royalblue;" th:text="${#authentication.name}">User</span>
-    </h2>
+<!--    <h2 class="display-3 text-center">-->
+<!--        Your Images: <span style="color:royalblue;" th:text="${#authentication.name}">User</span>-->
+<!--    </h2>-->
     <div class="form-group display-3 text-right">
         <form method="GET" action="/account/images" class="form-inline">
             <label>
@@ -66,6 +68,7 @@
     <tr>
         <td>I.Num.</td>
         <td>Title</td>
+        <td>Account Name</td>
         <td>Image</td>
         <td>Tag</td>
         <td>Type</td>
@@ -76,6 +79,7 @@
     <tr th:each="image : ${list}">
         <td th:with="count=${count + 1}" th:text="${count}"></td>
         <td th:text="${image.name}"></td>
+        <td th:text="${#authentication.name}">User</td>
         <td><img th:src="@{${'/image/display/'+ image.id}}"
                  class="card img-fluid" style="width:300px"/></td>
         <td th:text="${image.tag}"></td>
