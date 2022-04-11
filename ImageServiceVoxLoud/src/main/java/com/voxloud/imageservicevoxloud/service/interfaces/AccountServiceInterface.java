@@ -9,8 +9,8 @@ import java.util.List;
 public interface AccountServiceInterface extends UserDetailsService {
     void saveAccount(Account account);
     void save(UserRegistrationDto registration);
-    Account findByEmail(String email);
-    Account findByName(String username);
+    Account findAccountByEmail(String email);
+    Account findAccountByName(String username);
     Account findAccountById(Long id);
     List<Account> getList();
     Account updateAccount(Account source, Long id);

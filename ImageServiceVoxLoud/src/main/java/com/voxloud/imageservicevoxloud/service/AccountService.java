@@ -71,20 +71,22 @@ public class AccountService implements AccountServiceInterface, UserDetailsServi
         account.setPassword(passwordEncoder.encode(registration.getPassword()));
         account.setCreateDate(new Date());
         account.setUpdateDate(new Date());
-        account.setRoles(new HashSet<>(List.of(Role.USER)));
+        if (account.getRoles() == null) {
+            account.setRoles(new HashSet<>(List.of(Role.USER)));
+        }
         accountRepository.save(account);
     }
 
     @Override
     @Transactional
-    public Account findByEmail(String email) {
+    public Account findAccountByEmail(String email) {
         log.info("Fetching user {}", email);
         return accountRepository.findByEmail(email);
     }
 
     @Override
     @Transactional
-    public Account findByName(String username) {
+    public Account findAccountByName(String username) {
         log.info("Fetching user {}", username);
         Account findAccount = accountRepository.findByUsername(username);
         if(findAccount != null) {

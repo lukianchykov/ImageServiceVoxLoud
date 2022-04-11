@@ -59,7 +59,7 @@ public class ImageController {
             @RequestParam("tag") String tag,
             final @RequestParam("image") MultipartFile file
     ) throws IOException {
-        Account account = accountService.findByName(principal.getName());
+        Account account = accountService.findAccountByName(principal.getName());
 
         Image image = new Image();
 
@@ -79,7 +79,7 @@ public class ImageController {
     @ResponseBody
     void showUniqueImageUtils(@PathVariable("id") Long id, HttpServletResponse response)
             throws IOException {
-        log.info("Id : " + id);
+        log.info("Id: " + id);
         Optional<Image> image = imageService.findImageById(id);
         if (image.isPresent()) {
             response.setContentType(String.valueOf(MediaType.valueOf(image.get().getType())));

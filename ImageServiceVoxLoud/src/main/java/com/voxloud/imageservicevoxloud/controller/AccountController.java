@@ -46,10 +46,10 @@ public class AccountController {
     }
 
     @PostMapping("/registration")
-    public String registerUserAccount(@ModelAttribute("account") @Valid UserRegistrationDto userDto,
+    public String registerAccount(@ModelAttribute("account") @Valid UserRegistrationDto userDto,
                                       BindingResult result){
 
-        Account existingByEmail = accountService.findByEmail(userDto.getEmail());
+        Account existingByEmail = accountService.findAccountByEmail(userDto.getEmail());
         if (existingByEmail != null){
             result.rejectValue("email", String.valueOf(HttpStatus.CONFLICT), "There is already an account registered");
         }
@@ -62,14 +62,14 @@ public class AccountController {
         return "redirect:/login";
     }
 
-    @Secured("ADMIN")
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/admin/{id}")
-    public String getAdminPage(@PathVariable Long id, Model model) {
-        model.addAttribute("admin", accountService.findAccountById(id));
-        model.addAttribute("list" , accountService.getList());
-        return "admin-page";
-    }
+//    @Secured("ADMIN")
+//    @PreAuthorize("isAuthenticated()")
+//    @GetMapping("/admin/{id}")
+//    public String getAdminPage(@PathVariable Long id, Model model) {
+//        model.addAttribute("admin", accountService.findAccountById(id));
+//        model.addAttribute("list" , accountService.getList());
+//        return "admin-page";
+//    }
 
     @GetMapping("/login")
     public String login(){
@@ -81,6 +81,13 @@ public class AccountController {
     @GetMapping(path = "/accounts")
     public ResponseEntity<List<Account>> getAccounts() {
         return ResponseEntity.ok().body(accountService.getList());
+    }
+
+    @Secured("ADMIN")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping(path = "/account/{id}")
+    public ResponseEntity<Account> getAccount(@PathVariable Long id) {
+        return ResponseEntity.ok().body(accountService.findAccountById(id));
     }
 
     @Secured("ADMIN")
