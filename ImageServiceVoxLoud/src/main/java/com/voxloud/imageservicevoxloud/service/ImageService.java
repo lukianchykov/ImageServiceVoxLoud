@@ -1,7 +1,9 @@
 package com.voxloud.imageservicevoxloud.service;
 
+import com.voxloud.imageservicevoxloud.entity.Account;
 import com.voxloud.imageservicevoxloud.entity.Image;
 import com.voxloud.imageservicevoxloud.exception.CustomEmptyDataException;
+import com.voxloud.imageservicevoxloud.repository.AccountRepository;
 import com.voxloud.imageservicevoxloud.repository.ImageRepository;
 import com.voxloud.imageservicevoxloud.service.interfaces.ImageServiceInterface;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class ImageService implements ImageServiceInterface {
 
     private final ImageRepository imageRepository;
+    private final AccountService accountService;
 
     public Image saveImage(Image image) {
         image.setAccount(image.getAccount());
@@ -37,6 +40,13 @@ public class ImageService implements ImageServiceInterface {
         log.info("Fetching all images {} ", filter);
         return imageRepository.searchByFilter(filter);
     }
+
+    @Override
+    public List<Image> getAllImagesByAccountId(Long accountId) {
+        log.info("Fetching all images {} ", accountId);
+        return imageRepository.findByAccountId(accountId);
+    }
+
     @Override
     public Optional<Image> findImageById(Long id) {
         return imageRepository.findById(id);

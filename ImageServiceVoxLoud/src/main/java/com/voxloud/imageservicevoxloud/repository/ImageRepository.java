@@ -11,5 +11,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
     Optional<Image> findById(Long id);
     @Query(value = "SELECT i FROM Image i WHERE CONCAT(i.name, ' ', i.type, ' ', i.tag, ' ', i.createDate) LIKE %?1%")
     List<Image> searchByFilter(String filter);
+    List<Image> findByAccountId(Long accountId);
     List<Image> findAll();
 }

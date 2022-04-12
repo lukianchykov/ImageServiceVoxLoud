@@ -93,13 +93,14 @@ public class ImageController {
     @Secured("USER")
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/account/images")
-    public String search(@Param("filter")String filter, Model model) {
+    public String search(@Param("filter")String filter, Model model, Principal principal) {
         List<Image> images;
 
         if (filter != null && !filter.isEmpty()) {
             images = imageService.findImageByFilter(filter);
         }else {
-            images = imageService.getAllImages();
+            Account account = accountService.findAccountByName(principal.getName());
+            images = imageService.getAllImagesByAccountId(account.getId());
         }
 
         model.addAttribute("list", images);
